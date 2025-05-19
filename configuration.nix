@@ -134,7 +134,7 @@ in
   networking.nameservers = [ "1.1.1.1" "8.8.8.8"];
     
 
-  fonts.packages = with pkgs; [ noto-fonts noto-fonts-emoji, segoeUI ];
+  fonts.packages = with pkgs; [ noto-fonts noto-fonts-emoji segoeUI ];
 
   imports =
     [ # Include the results of the hardware scan.
