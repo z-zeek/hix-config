@@ -4,6 +4,22 @@
 
 { config, inputs, lib, pkgs, ... }: 
 
+let
+  segoeUI = pkgs.stdenv.mkDerivation rec {
+    name = "segoe-ui-font";
+    src = pkgs.fetchurl {
+      url = "https://github.com/mrbvrz/segoe-ui-linux/archive/refs/heads/master.zip";
+      sha256 = "..."; # Replace with the actual sha256 hash
+    };
+    installPhase = ''
+      mkdir -p $out/share/fonts
+      unzip $src -d $out/share/fonts
+      fc-cache -fv
+    '';
+  };
+in
+
+
 {
   hardware.firmware = let
     brcmFirmware = pkgs.runCommand "brcm-firmware" {
@@ -118,7 +134,7 @@
   networking.nameservers = [ "1.1.1.1" "8.8.8.8"];
     
 
-  fonts.packages = with pkgs; [ noto-fonts noto-fonts-emoji ];
+  fonts.packages = with pkgs; [ noto-fonts noto-fonts-emoji, segoeUI ];
 
   imports =
     [ # Include the results of the hardware scan.
@@ -135,7 +151,7 @@
   time.timeZone = "Europe/Amsterdam";
 
   # Enable touchpad support (enabled default in most desktopManager).
-   services.libinput.enable = true;
+  services.libinput.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
