@@ -82,6 +82,11 @@ in
     enable = true;
     xwayland.enable = true;
   };
+
+  # enable waybar
+  programs.waybar = {
+    enable = true;
+  };
   
   # enable greetd
   services.greetd = {
