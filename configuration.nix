@@ -4,23 +4,35 @@
 
 { config, inputs, lib, pkgs, ... }: 
 
+
 let
-  segoeUI = pkgs.stdenv.mkDerivation rec {
-    name = "segoe-ui-font";
+  segoeFont = pkgs.stdenv.mkDerivation {
+    pname = "segoe-ui-font";
+    version = "master";
+
     src = pkgs.fetchurl {
       url = "https://github.com/mrbvrz/segoe-ui-linux/archive/refs/heads/master.zip";
-      sha256 = "..."; # Replace with the actual sha256 hash
+      sha256 = "WQFVhZqSg5XD1HhAiM7eUjOAUJCjB5YfjrIAUUFHf2M=";
     };
-    installPhase = ''
-      mkdir -p $out/share/fonts
-      unzip $src -d $out/share/fonts
-      fc-cache -fv
+
+    # Add coreutils to ensure 'unzip' is available during the build process
+    buildInputs = [ pkgs.unzip ];
+
+    # Explicitly set the unpack phase to unzip the downloaded ZIP file
+    unpackPhase = ''
+      # Ensure 'unzip' is available from coreutils and unzip the source
+      mkdir -p $out/share/fonts/truetype/segoe
+      unzip $src -d $out/share/fonts/truetype/segoe
     '';
+
+    installPhase = "true";  # No actual install phase needed since unzip happens in unpackPhase
   };
 in
 
-
 {
+
+  nixpkgs.config.allowUnfree = true;
+
   hardware.firmware = let
     brcmFirmware = pkgs.runCommand "brcm-firmware" {
       src = ./lib/firmware/brcm;
@@ -33,6 +45,7 @@ in
 
   # add env packages
   environment.systemPackages = with pkgs; [
+    nwg-look
     hyprland
     wayland
     wayland-utils
@@ -69,7 +82,6 @@ in
     libsForQt5.qt5ct
     wlogout
     zsh
-    nodejs_23
     _1password-gui
     _1password-cli
     vscode
@@ -82,11 +94,6 @@ in
     enable = true;
     xwayland.enable = true;
   };
-
-  # enable waybar
-  programs.waybar = {
-    enable = true;
-  };
   
   # enable greetd
   services.greetd = {
@@ -98,7 +105,6 @@ in
       };
     };
   };
-
 
   services.xserver.enable = false;
   services.dbus.enable = true;
@@ -136,7 +142,7 @@ in
   networking.nameservers = [ "1.1.1.1" "8.8.8.8"];
     
 
-  fonts.packages = with pkgs; [ noto-fonts noto-fonts-emoji segoeUI ];
+  fonts.packages = with pkgs; [ noto-fonts noto-fonts-emoji segoeFont ];
 
   imports =
     [ # Include the results of the hardware scan.
