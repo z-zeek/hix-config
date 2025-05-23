@@ -7,15 +7,13 @@
 {
   services.xserver.enable = false;
   services.dbus.enable = true;
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
 
   imports =
     [
       ../common/hardware/brcm.nix
       ../common/hardware/touchpad.nix
       ../common/DE/hyprland.nix
-      ../commond/DE/greetd.nix
+      ../common/DE/greetd.nix
       ../common/system/garbagecollect.nix
       ../common/system/journald.nix
       ../common/system/locales.nix
