@@ -8,31 +8,6 @@
   services.xserver.enable = false;
   services.dbus.enable = true;
 
-  imports =
-    [
-      ../common/hardware/brcm.nix
-      ../common/hardware/touchpad.nix
-      ../common/DE/hyprland.nix
-      ../common/DE/greetd.nix
-      ../common/system/garbagecollect.nix
-      ../common/system/journald.nix
-      ../common/system/locales.nix
-      ../common/system/btrfs.nix
-      ../common/system/docker.nix
-      ../common/system/podman.nix
-      ../common/system/pipewire.nix
-      ../common/system/systemd-boot.nix
-      ../common/system/zram.nix
-      ../common/system/rtkit.nix
-      ../common/system/nix_cfg.nix
-      ../common/system/autoupgrade.nix
-      ../common/networking/ssh.nix
-      ../common/networking/network_manager.nix
-      ../common/networking/fw_off.nix
-      ../common/users/zk.nix
-      ./hardware-configuration.nix
-    ];
-
   system.stateVersion = "25.05";
 
 }
