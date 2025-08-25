@@ -99,6 +99,15 @@
     neovim
   ];
 
+  programs.firefox = {
+    enable = true;
+    profiles.default.settings = {
+      "privacy.resistFingerprinting" = true;
+      "network.cookie.cookieBehavior" = 1;
+      "dom.webnotifications.enabled" = false;
+    };
+  };
+
   fonts = {
     packages =  with pkgs; [
     noto-fonts
